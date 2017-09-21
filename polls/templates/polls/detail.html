@@ -1,0 +1,7 @@
+<h1>{{ question.question_text }}</h1>
+<ul>
+    {% for choice in question.choice_set.all%}
+{#        展示投票的没有选项#}
+        <li>{{ choice.choice_text }}</li>
+    {% endfor %}
+</ul>

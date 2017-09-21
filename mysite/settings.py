@@ -58,6 +58,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
+        # APP_DIRS设为True，意味着DjangoTemplates会在INSTALL_APPS所包含的所有应用的目录下寻找名为'templates'子目录
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

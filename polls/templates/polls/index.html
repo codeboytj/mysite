@@ -1,0 +1,12 @@
+{% if latest_question_list %}
+    <ul>
+{#    打印latest_question_list中的所有question#}
+        {% for question in latest_question_list %}
+{#            <li><a href="/polls/{{ question.id }}">{{ question.question_text }}</a> </li>#}
+{#            利用polls/urls.py中配置的name=detail的url()，传入question_id，来放弃硬编码方式，并且加上urls.py中设置的namespace#}
+            <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a> </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available</p>
+{% endif %}
