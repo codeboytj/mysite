@@ -1,7 +1,17 @@
 <h1>{{ question.question_text }}</h1>
-<ul>
+
+{#投票出错的时候，显示从服务器返回的错误信息#}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{%  url 'polls:vote' question.id %}" method="post">
+{#  对于表单使用这个模板标签来小心跨站点请求伪造#}
+    {% csrf_token %}
     {% for choice in question.choice_set.all%}
-{#        展示投票的没有选项#}
-        <li>{{ choice.choice_text }}</li>
+        {#        展示投票的所有选项#}
+{#       forloop.counter记载for标签已经循环了多少次 #}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+        <br />
     {% endfor %}
-</ul>
+    <input type="submit" value="Vote"/>
+</form>
