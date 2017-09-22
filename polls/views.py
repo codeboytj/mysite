@@ -1,14 +1,35 @@
 # coding=utf-8
 from django.shortcuts import render,get_object_or_404
-from django.http import HttpResponse,Http404,HttpResponseRedirect
+from django.http import HttpResponse,Http404,HttpResponseRedirect,JsonResponse
 from django.template import RequestContext,loader
 from django.core.urlresolvers import reverse
 # 引入django的通用视图
 from django.views import generic
 from django.utils import timezone
 from .models import Question,Choice
+from .serializers import QuestionSerializer,QuestionDetailSerializer
 
 # Create your views here.
+
+# rest风格返回问题列表
+def question_list(request):
+
+    if request.method=='GET':
+        questions=Question.objects.all()
+        serializer=QuestionSerializer(questions,many=True)
+        return JsonResponse(serializer.data,safe=False)
+
+# rest风格返回问题详情列表
+def question_detail(request,pk):
+
+    try:
+        question=Question.objects.get(pk=pk)
+    except Question.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method=='GET':
+        serializer=QuestionDetailSerializer(question)
+        return JsonResponse(serializer.data)
 
 # 改良视图
 class IndexView(generic.ListView):
