@@ -28,9 +28,17 @@ class Question(models.Model):
     # 初始的时候管理页面的该列标题为'was_published_recently'，这样设置之后就变成了'Published recently'
     was_published_recently.short_description='Published recently'
 
+    # 对于python2，定义__unicode__()方法方便命令行操作，django有一个默认的__str__()方法，
+    # 它会调用__unicode__()并将结果转换为utf8字符串。对于python3,应该直接定义__str__()方法。
+    def __unicode__(self):
+        return self.question_text
+
 class Choice(models.Model):
     question=models.ForeignKey(Question)
     # 关于question的一个选择的内容
     choice_text=models.CharField(max_length=200)
     # 该选择的得票
     votes=models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.choice_text
