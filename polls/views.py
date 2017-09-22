@@ -5,6 +5,7 @@ from django.template import RequestContext,loader
 from django.core.urlresolvers import reverse
 # 引入django的通用视图
 from django.views import generic
+from django.utils import timezone
 from .models import Question,Choice
 
 # Create your views here.
@@ -18,7 +19,8 @@ class IndexView(generic.ListView):
     context_object_name='latest_question_list'
 
     def get_queryset(self):
-        return Question.objects.order_by('-pub_date')[:5]
+        # 修复bug，过滤掉未来的问题
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
 
 # 接受参数的视图
 # 问题详情页面
@@ -27,6 +29,10 @@ class DetailView(generic.DetailView):
     # 然后generic.DetailView会自动根据Question，生成名为question的模型加入context
     model = Question
     template_name = 'polls/detail.html'
+
+    def get_queryset(self):
+        # 修复bug，如果用户使用url，可以直接进入未来的问题详情页面，进行投票，所以需要将未来的问题进行过滤
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
 # 投票结果视图
 class ResultsView(generic.DetailView):

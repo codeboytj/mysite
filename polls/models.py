@@ -19,7 +19,9 @@ class Question(models.Model):
 
     # 是否近期发布
     def was_published_recently(self):
-        return self.pub_date>=timezone.now() - datetime.timedelta(days=1)
+        now=timezone.now()
+        # 修复Bug，对于未来发布的返回false
+        return now-datetime.timedelta(days=1)<=self.pub_date<=now
 
     # 这句话效果是：当管理页面点击was_published_recently进行排序的时候，管理页面按照pub_date字段进行排序
     was_published_recently.admin_order_field='pub_date'
@@ -30,6 +32,7 @@ class Question(models.Model):
 
     # 对于python2，定义__unicode__()方法方便命令行操作，django有一个默认的__str__()方法，
     # 它会调用__unicode__()并将结果转换为utf8字符串。对于python3,应该直接定义__str__()方法。
+    # 在命令行使用Question()传入中文的时候，要加入u，否则命令行出现Bad Unicode data，比如Question(question_text=u"未来")
     def __unicode__(self):
         return self.question_text
 
