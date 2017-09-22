@@ -1,3 +1,6 @@
+{#从staticfiles模板库家在{% static %}模板标签。{% static %}模板标签会生成静态文件的绝对Url#}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
 {% if latest_question_list %}
     <ul>
 {#    打印latest_question_list中的所有question#}

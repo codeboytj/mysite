@@ -1,0 +1,7 @@
+/*静态文件与模板文件一样，目录结构为static/polls/*/
+li a{
+    color: green;
+}
+body{
+    background: white url("images/background.gif") no-repeat right bottom;
+}
