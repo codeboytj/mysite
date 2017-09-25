@@ -6,8 +6,13 @@ from django.core.urlresolvers import reverse
 # 引入django的通用视图
 from django.views import generic
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from rest_framework import status
+from rest_framework.response import Response
+
 from .models import Question,Choice
-from .serializers import QuestionSerializer,QuestionDetailSerializer
+from .serializers import QuestionSerializer,QuestionDetailSerializer,VoteDetailSerializer
 
 # Create your views here.
 
@@ -30,6 +35,35 @@ def question_detail(request,pk):
     if request.method=='GET':
         serializer=QuestionDetailSerializer(question)
         return JsonResponse(serializer.data)
+
+# rest风格的投票视图
+# @api_view注解用来使用在函数之前
+@api_view(['POST'])
+@csrf_exempt
+def question_vote(request,question_id):
+    # 先找找有没有符合id的question
+    p=get_object_or_404(Question,pk=question_id)
+
+    try:
+        # 根据post传过来的名为choice的radio标签传过来的id参数，找到相应choice
+        # 使用request.data代替request.POST，可以用于多种method，比如PUT,PATCH等
+        selected_choice=p.choice_set.get(pk=request.data['choice'])
+    except(KeyError,Choice.DoesNotExist):
+        # 投票出错，以error_message返回错误信息，显示在detail页面上
+        # 返回投票出错的json
+        return render(request,'polls/detail.html',{
+            'question':p,
+            'error_message':"You didn't select a choice"
+        })
+    else:
+        # 得票数自增,通过save方法改动到数据库
+        selected_choice.votes+=1;
+        selected_choice.save()
+        # 返回投票成功的json
+        # 不传入many=True，因为现在传入的Question只有一个对象，不然要报错
+        serializer=VoteDetailSerializer(p)
+        # 使用这个status.HTTP_201_CREATED，使用post请求时居然生成了一个像文档的接口页面
+        return Response(serializer.data,status=status.HTTP_201_CREATED)
 
 # 改良视图
 class IndexView(generic.ListView):

@@ -3,7 +3,7 @@
 {#投票出错的时候，显示从服务器返回的错误信息#}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{%  url 'polls:vote' question.id %}" method="post">
+<form action="{%  url 'polls:restVote' question.id %}" method="post">
 {#  对于表单使用这个模板标签来小心跨站点请求伪造#}
     {% csrf_token %}
     {% for choice in question.choice_set.all%}
