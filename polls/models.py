@@ -3,6 +3,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from jsonfield import JSONField
 # from django.utils.datetime_safe import datetime
 
 # Create your models here.
@@ -16,6 +17,8 @@ class Question(models.Model):
     question_text=models.CharField(max_length=200)
     # 发布时间
     pub_date=models.DateTimeField('date published')
+    # 其他信息，使用Json字符串，便于扩展
+    extra=JSONField()
 
     # 是否近期发布
     def was_published_recently(self):
@@ -37,7 +40,7 @@ class Question(models.Model):
         return self.question_text
 
 class Choice(models.Model):
-    question=models.ForeignKey(Question)
+    question=models.ForeignKey(Question,related_name='choices')
     # 关于question的一个选择的内容
     choice_text=models.CharField(max_length=200)
     # 该选择的得票

@@ -47,7 +47,7 @@ def question_vote(request,question_id):
     try:
         # 根据post传过来的名为choice的radio标签传过来的id参数，找到相应choice
         # 使用request.data代替request.POST，可以用于多种method，比如PUT,PATCH等
-        selected_choice=p.choice_set.get(pk=request.data['choice'])
+        selected_choice=p.choices.get(pk=request.data['choice'])
     except(KeyError,Choice.DoesNotExist):
         # 投票出错，以error_message返回错误信息，显示在detail页面上
         # 返回投票出错的json
@@ -101,7 +101,7 @@ def vote(request,question_id):
 
     try:
         # 根据post传过来的名为choice的radio标签传过来的id参数，找到相应choice
-        selected_choice=p.choice_set.get(pk=request.POST['choice'])
+        selected_choice=p.choices.get(pk=request.POST['choice'])
     except(KeyError,Choice.DoesNotExist):
         # 投票出错，以error_message返回错误信息，显示在detail页面上
         return render(request,'polls/detail.html',{
