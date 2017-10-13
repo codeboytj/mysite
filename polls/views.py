@@ -10,6 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
+import json
 
 from .models import Question,Choice
 from .serializers import QuestionSerializer,QuestionDetailSerializer,VoteDetailSerializer
@@ -59,6 +61,9 @@ def question_vote(request,question_id):
         # 得票数自增,通过save方法改动到数据库
         selected_choice.votes+=1;
         selected_choice.save()
+        # 将请求中的以'extra'为属性名的json字符串转换成dict
+        p.extra=json.loads(request.data['extra'])
+        p.save()
         # 返回投票成功的json
         # 不传入many=True，因为现在传入的Question只有一个对象，不然要报错
         serializer=VoteDetailSerializer(p)

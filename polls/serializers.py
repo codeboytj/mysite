@@ -9,7 +9,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         # 定义需要序列化的模型
         model=Question
         # 定义需要序列化的field
-        fields=('id','question_text','pub_date')
+        fields=('id','question_text','pub_date','extra')
 
 class ChoiceSerializer(serializers.ModelSerializer):
 
@@ -70,4 +70,4 @@ class VoteDetailSerializer(serializers.ModelSerializer):
         # 定义需要序列化的模型
         model=Question
         # 定义需要序列化的field
-        fields=('id','question_text','pub_date','choice')
+        fields=('id','question_text','pub_date','choice','extra')

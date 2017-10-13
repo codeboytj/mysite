@@ -18,24 +18,9 @@ source helloDjango/bin/activate
 ```
 然后，就可以在环境中安装独立的依赖包了。
 
-### 安装Django1.8.2
+### 一次性安装依赖
 
+依赖全在requirements.txt中，直接安装依赖即可
 ```
-pip install Django==1.8.2
-``` 
-
-### 使用Mysqldb与mysql进行交互
-
-安装这个之前需要安装mysql，需要一些依赖
-```
-pip install MySQL-python==1.2.5
-```
-
-### Django REST framework
-
-#### 环境搭建
-
-安装djangorestframework
-```
-pip install djangorestframework==3.6.3
+pip install -r requirements.txt
 ```
