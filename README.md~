@@ -1,6 +1,6 @@
 #  Django学习
 
-Python2.7+Django1.9.0+djangorestframework3.6.3+Mysql+celery
+Python2.7+Django1.8.2+djangorestframework3.6.3+Mysql
 
 ## 1. 环境搭建
 

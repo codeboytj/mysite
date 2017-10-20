@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import djcelery
+
+djcelery.setup_loader()
+# tell celery use RabbitMQ for broker
+BROKER_URL = 'amqp://guest:guest@localhost//'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -40,6 +45,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'polls',
     'rest_framework',
+    'djcelery',
+    'tasks',
 )
 
 MIDDLEWARE_CLASSES = (
