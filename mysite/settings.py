@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'djcelery',
     'tasks',
+    'asyncTasks',
 )
 
 MIDDLEWARE_CLASSES = (

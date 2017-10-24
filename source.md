@@ -24,3 +24,20 @@ source helloDjango/bin/activate
 ```
 pip install -r requirements.txt
 ```
+
+### 使用异步任务
+
+打开celery的worker：
+
+```
+python manage.py celery worker --loglevel=info --settings=mysite.settings  --autoreload
+```
+
+使用django命令行执行异步任务：
+
+```
+from asyncTasks.hello import add
+add.delay(4,5)
+```
+
+然后就可以在打开的worker中看到任务的运行状态了

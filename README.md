@@ -1,6 +1,6 @@
 #  Django学习
 
-Python2.7+Django1.9.0+djangorestframework3.6.3+Mysql+celery
+Python2.7+Django1.8.2+djangorestframework3.6.3+Mysql
 
 ## 1. 环境搭建
 
@@ -24,3 +24,20 @@ source helloDjango/bin/activate
 ```
 pip install -r requirements.txt
 ```
+
+### 1.3. 使用异步任务
+
+打开celery的worker：
+
+```
+python manage.py celery worker --loglevel=info --settings=mysite.settings  --autoreload
+```
+
+使用django命令行执行异步任务：
+
+```
+from asyncTasks.hello import add
+add.delay(4,5)
+```
+
+然后就可以在打开的worker中看到任务的运行状态了
